@@ -1,0 +1,31 @@
+version: '3'
+services:
+  jenkins:
+    image: "jenkinsci/blueocean"
+    user: root
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - jenkins_nw
+    expose:
+      - "8080"
+    ports:
+      - "50000:50000"
+  nginx:
+    image: "nginx:latest"
+    links:
+      - jenkins:jenkinssvc
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - jenkins
+    networks:
+      - jenkins_nw
+networks:
+  jenkins_nw:
+    driver: bridge
+
