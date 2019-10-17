@@ -23,7 +23,7 @@ services:
       - "80:8080"
     volumes:
       - ./certs:/etc/ssl
-      - ./conf.d:/etc/nginx/conf.d
+      - ./nginx/conf.d:/etc/nginx/conf.d
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - jenkins_nw
